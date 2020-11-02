@@ -10,6 +10,136 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+//employee array 
+const employees = [];
+
+// New manager setup Manager
+function newManager() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'name',
+            message: "Manager Name: "
+        },
+        {
+            type: 'number',
+            name: 'id',
+            message: 'Manager ID: '
+        },
+        {
+            type: 'input',
+            name: 'email',
+            message: 'Manager Email:'
+        },
+        {
+            type: 'number',
+            name: 'officeNumber',
+            message: 'Manager Office Number: '
+        }
+    ]).then((response) => {
+        const manager = new Manager(response.name, response.id, response.email, response.officeNumber);
+        console.log(manager)
+        employees.push(manager);
+        newEmployee();
+    });
+}
+
+//Team Member
+function newEmployee() {
+    inquirer.prompt([
+        {
+            type: 'list',
+            name: 'newEmployee',
+            message: "Select New Employee:",
+            choices: [
+                'Engineer',
+                'Intern',
+                'No more, quit.'
+            ]
+        }
+    ]).then((response) => {
+        switch (response.newEmployee) {
+            case 'Engineer': newEngineer();
+                break;
+            case 'Intern': newIntern();
+                break;
+            default: employeeSummary();
+        }
+    });
+}
+
+//Engineer
+function newEngineer() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'name',
+            message: 'Engineer Name: '
+        },
+        {
+            type: 'number',
+            name: 'id',
+            message: "Engineer ID: "
+        },
+        {
+            type: 'input',
+            name: 'email',
+            message: "Email: "
+        },
+        {
+            type: 'input',
+            name: 'github',
+            message: 'Github Username: '
+        }
+    ]).then((response) => {
+        const engineer = new Engineer(response.name, response.id, response.email, response.github);
+        employees.push(engineer);
+        newEmployee();
+    });
+
+}
+
+//Intern
+function newIntern() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'name',
+            message: 'Intern Name: '
+        },
+        {
+            type: 'number',
+            name: 'id',
+            message: 'Intern ID: '
+        },
+        {
+            type: 'input',
+            name: 'email',
+            message: 'Intern Email: '
+        },
+        {
+            type: 'input',
+            name: 'school',
+            message: 'School Attended: '
+        }
+    ]).then((response) => {
+        const intern = new Intern(response.name, response.id, response.email, response.school);
+        employees.push(intern);
+        newEmployee();
+    });
+}
+
+//Employee Summary
+function employeeSummary() {
+    if (!fs.existsSync(OUTPUT_DIR)) {
+        fs.mkdirSync(OUTPUT_DIR);
+    }
+    else {
+        fs.writeFileSync(outputPath, render(employees), "utf-8");
+    }
+}
+
+newManager();
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
