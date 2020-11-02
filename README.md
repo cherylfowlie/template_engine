@@ -32,6 +32,8 @@ test/          // jest tests
 app.js         // Runs the application
 ```
 
+![Alt text](/assets/terminal.png?raw=true "Terminal Usage")
+
 ### Classes
 The project must have the these classes: `Employee`, `Manager`, `Engineer`,
 `Intern`. The tests for these classes in the `tests` directory must all pass.
@@ -46,3 +48,6 @@ methods:
   * getId()
   * getEmail()
   * getRole() // Returns 'Employee'
+
+
+![Alt text](/assets/web.png?raw=true "Web Output Example")
